@@ -8,8 +8,12 @@ import Signin from '@/app/components/Auth/SignIn'
 import SignUp from '@/app/components/Auth/SignUp'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { HeaderItem } from '@/app/types/menu'
+import { useAuth } from '@/contexts/AuthContext'
 
 const Header: React.FC = () => {
+
+  const { logout, isLoggedIn } = useAuth()
+
   const [headerData, setHeaderData] = useState<HeaderItem[]>([])
 
   const [navbarOpen, setNavbarOpen] = useState(false)
@@ -17,7 +21,6 @@ const Header: React.FC = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false)
   const [isSignUpOpen, setIsSignUpOpen] = useState(false)
 
-  const navbarRef = useRef<HTMLDivElement>(null)
   const signInRef = useRef<HTMLDivElement>(null)
   const signUpRef = useRef<HTMLDivElement>(null)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
@@ -81,9 +84,8 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 z-40 w-full transition-all duration-300 ${
-        sticky ? ' shadow-lg bg-white py-4' : 'shadow-none py-4'
-      }`}>
+      className={`fixed top-0 z-40 w-full transition-all duration-300 ${sticky ? ' shadow-lg bg-white py-4' : 'shadow-none py-4'
+        }`}>
       <div>
         <div className='container mx-auto max-w-7xl px-4 flex items-center justify-between'>
           <Logo />
@@ -93,18 +95,29 @@ const Header: React.FC = () => {
             ))}
           </nav>
           <div className='flex items-center gap-4'>
-            <button
-              className='hidden lg:block bg-transparent text-primary border hover:bg-primary border-primary hover:text-white duration-300 px-6 py-2 rounded-lg hover:cursor-pointer'
-              onClick={() => {
-                setIsSignInOpen(true)
-              }}>
-              Sign In
-            </button>
+            {isLoggedIn ? (
+              <button
+                className='hidden lg:block bg-transparent text-primary border hover:bg-primary border-primary hover:text-white duration-300 px-6 py-2 rounded-lg hover:cursor-pointer'
+                onClick={() => {
+                  setIsSignInOpen(true)
+                }}>
+                Sign In
+              </button>
+            ) : (
+              <button
+                className='hidden lg:block bg-transparent text-primary border hover:bg-primary border-primary hover:text-white duration-300 px-6 py-2 rounded-lg hover:cursor-pointer'
+                onClick={() => {
+                  logout()
+                }}>
+                Logout
+              </button>
+            )}
+
             {isSignInOpen && (
               <div className='fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50'>
                 <div
                   ref={signInRef}
-                  className='relative mx-auto w-full max-w-md overflow-hidden rounded-lg px-8 pt-14 pb-8 text-center bg-dark_grey/90 backdrop-blur-md bg-white'>
+                  className='relative mx-auto w-full max-w-md overflow-hidden rounded-lg px-8 pt-8 pb-8 text-center bg-dark_grey/90 backdrop-blur-md bg-white'>
                   <button
                     onClick={() => setIsSignInOpen(false)}
                     className='absolute top-0 right-0 mr-8 mt-8 dark:invert'
@@ -117,33 +130,6 @@ const Header: React.FC = () => {
                     />
                   </button>
                   <Signin />
-                </div>
-              </div>
-            )}
-            <button
-              className='hidden lg:block bg-primary text-white text-base font-medium hover:bg-transparent duration-300 hover:text-primary border border-primary px-6 py-2 rounded-lg hover:cursor-pointer'
-              onClick={() => {
-                setIsSignUpOpen(true)
-              }}>
-              Sign Up
-            </button>
-            {isSignUpOpen && (
-              <div className='fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50'>
-                <div
-                  ref={signUpRef}
-                  className='relative mx-auto bg-white w-full max-w-md overflow-hidden rounded-lg bg-dark_grey/90 backdrop-blur-md px-8 pt-14 pb-8 text-center'>
-                  <button
-                    onClick={() => setIsSignUpOpen(false)}
-                    className='absolute top-0 right-0 mr-8 mt-8 dark:invert'
-                    aria-label='Close Sign Up Modal'>
-                    <Icon
-                      icon='material-symbols:close-rounded'
-                      width={24}
-                      height={24}
-                      className='text-black hover:text-primary inline-block hover:cursor-pointer'
-                    />
-                  </button>
-                  <SignUp />
                 </div>
               </div>
             )}
@@ -162,9 +148,8 @@ const Header: React.FC = () => {
         )}
         <div
           ref={mobileMenuRef}
-          className={`lg:hidden fixed top-0 right-0 h-full w-full bg-white shadow-lg transform transition-transform duration-300 max-w-xs ${
-            navbarOpen ? 'translate-x-0' : 'translate-x-full'
-          } z-50`}>
+          className={`lg:hidden fixed top-0 right-0 h-full w-full bg-white shadow-lg transform transition-transform duration-300 max-w-xs ${navbarOpen ? 'translate-x-0' : 'translate-x-full'
+            } z-50`}>
           <div className='flex items-center justify-between p-4'>
             <h2 className='text-lg font-bold text-midnight_text'>
               <Logo />
@@ -193,14 +178,6 @@ const Header: React.FC = () => {
                   setNavbarOpen(false)
                 }}>
                 Sign In
-              </button>
-              <button
-                className='bg-primary text-white px-4 py-2 rounded-lg border  border-primary hover:text-primary hover:bg-transparent hover:cursor-pointer transition duration-300 ease-in-out'
-                onClick={() => {
-                  setIsSignUpOpen(true)
-                  setNavbarOpen(false)
-                }}>
-                Sign Up
               </button>
             </div>
           </nav>

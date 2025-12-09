@@ -4,6 +4,7 @@ import Aoscompo from "../utils/aos";
 import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import { AuthProvider } from "@/contexts/AuthContext";
 const font = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -14,12 +15,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${font.className}`}>
-        <Aoscompo>
-          <Header />
-          {children}
-          <Footer />
-        </Aoscompo>
-        <ScrollToTop />
+        <AuthProvider>
+          <Aoscompo>
+            <Header />
+            {children}
+            <Footer />
+          </Aoscompo>
+          <ScrollToTop />
+        </AuthProvider>
       </body>
     </html>
   );
