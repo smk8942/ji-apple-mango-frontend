@@ -1,4 +1,3 @@
-import HeroSub from "@/app/components/SharedComponent/HeroSub";
 import NotFound from "@/app/components/NotFound";
 import { Metadata } from "next";
 

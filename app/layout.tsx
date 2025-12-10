@@ -13,12 +13,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${font.className}`}>
+    <html lang="en" data-scroll-behavior="smooth" >
+      <body className={`${font.className} `}>
         <AuthProvider>
           <Aoscompo>
             <Header />
-            {children}
+            <main className="flex-1 w-full">
+              {children}
+            </main>
             <Footer />
           </Aoscompo>
           <ScrollToTop />

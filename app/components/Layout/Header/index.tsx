@@ -95,7 +95,7 @@ const Header: React.FC = () => {
             ))}
           </nav>
           <div className='flex items-center gap-4'>
-            {isLoggedIn ? (
+            {!isLoggedIn ? (
               <button
                 className='hidden lg:block bg-transparent text-primary border hover:bg-primary border-primary hover:text-white duration-300 px-6 py-2 rounded-lg hover:cursor-pointer'
                 onClick={() => {

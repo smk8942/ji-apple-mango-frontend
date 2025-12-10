@@ -10,6 +10,7 @@ import {
 
 interface AuthContextType {
   isLoggedIn: boolean;
+  isLoading: boolean;
   refresh: () => void;
   logout: () => void;
   email: string;
@@ -17,6 +18,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
+  isLoading: true,
   refresh: () => { },
   logout: () => { },
   email: "",
@@ -24,10 +26,12 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState("");
 
   const refresh = () => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/login/status`, {
+    setIsLoading(true);
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/authentication/status`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -39,6 +43,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .catch((err) => {
         console.error("[Auth] Status check failed:", err);
         setIsLoggedIn(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -48,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       method: "GET",
       credentials: "include",
     }).finally(() => {
+      console.log("[Auth] Logged out");
       setIsLoggedIn(false);
       window.location.href = "/";
     });
@@ -60,7 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, refresh, logout, email }}
+      value={{ isLoggedIn, isLoading, refresh, logout, email }}
     >
       {children}
     </AuthContext.Provider>
