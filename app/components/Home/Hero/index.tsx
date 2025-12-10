@@ -10,7 +10,7 @@ const Banner = () => {
         <div className='container'>
           <div className='flex flex-col gap-4 text-center'>
             <h1 className='leading-tight font-bold tracking-tight max-w-4xl mx-auto'>
-              Advance your engineering skills with our courses
+              Advance your engineering skills with our courses.
             </h1>
             <p className='text-lg leading-8 text-black'>
               Build skills with our courses and mentor from world-class
