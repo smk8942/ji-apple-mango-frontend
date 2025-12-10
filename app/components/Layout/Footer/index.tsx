@@ -24,16 +24,16 @@ const Footer = () => {
   }, [])
 
   return (
-    <div className='bg-primary' id='first-section'>
-      <div className='container pt-24 pb-10'>
+    <div className='bg-sky-500' id='first-section'>
+      <div className='container pt-5 pb-3'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-16 xl:gap-8'>
           <div className='col-span-4 flex flex-col gap-5'>
             <div>
               <Image
-                src='/images/logo/logo2.svg'
+                src='/images/logo/trendix_logo_thumb.png'
                 alt='Logo'
-                width={48}
-                height={64}
+                width={150}
+                height={150}
               />
             </div>
             <p className='text-white text-lg font-medium leading-7'>
@@ -129,14 +129,7 @@ const Footer = () => {
       </div>
       <div className='py-3'>
         <h3 className='text-center text-white/60'>
-          @2025 - All Rights Reserved by{' '}
-          <Link
-            href='https://adminmart.com/'
-            target='_blank'
-            className='hover:text-white'>
-            {' '}
-            GetNextJs Templates.com
-          </Link>
+          @2025 - All Rights Reserved by AppleMango
         </h3>
       </div>
     </div>

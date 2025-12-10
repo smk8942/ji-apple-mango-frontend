@@ -1,12 +1,11 @@
 import React from 'react'
-import { signIn } from 'next-auth/react'
 
 const SocialSignUp = () => {
   return (
     <>
       <div className='flex gap-4'>
         <button
-          onClick={() => signIn('google')}
+          onClick={() => { }}
           className='flex w-full items-center justify-center gap-2.5 rounded-lg p-3.5 border border-gray-200 text-black hover:bg-neutral-100 hover:cursor-pointer'>
           Sign Up
           <svg
@@ -47,7 +46,7 @@ const SocialSignUp = () => {
         </button>
 
         <button
-          onClick={() => signIn('github')}
+          onClick={() => { }}
           className='flex w-full items-center justify-center gap-2.5 rounded-lg p-3.5 border border-gray-200 text-black hover:bg-neutral-100 hover:cursor-pointer'>
           Sign Up
           <svg
