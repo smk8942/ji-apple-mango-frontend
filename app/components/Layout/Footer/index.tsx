@@ -103,7 +103,7 @@ const Footer = () => {
 
           <div className='col-span-4'>
             <h3 className='text-white text-xl font-semibold mb-6'>
-              Stay up to date
+              Stay up to date.
             </h3>
             <div className='relative text-white focus-within:text-white flex flex-row-reverse w-[50%] lg:w-full'>
               <input
