@@ -1,7 +1,8 @@
-export const getHotTrend = async () => {
+
+export const categoryList = async (category: string, count: number) => {
 
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trends/categories/hot?limit=10&platform=youtube`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trends/categories/${category}/recommendations?limit=${count}&days=14&platform=youtube `, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -12,5 +13,6 @@ export const getHotTrend = async () => {
         return data;
     } catch (error) {
         console.log(error);
+        return [];
     }
 }

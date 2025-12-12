@@ -14,7 +14,7 @@ export default function Home() {
       <Hero />
       <NamesList />
       <Testimonial />
-      <ContactForm />
+      {/* <ContactForm /> */}
       <Mentor />
     </main>
   )

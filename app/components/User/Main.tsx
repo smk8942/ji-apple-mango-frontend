@@ -6,16 +6,13 @@ import { Recommendation } from '../Common/Recommendation';
 import { Category } from '@/types/category';
 
 
-
-
-
-export default function UserMain({ userCategory }: { userCategory: Category[] }) {
+export default function UserMain({ userCategory, hotTrend }: { userCategory: Category[], hotTrend: Video[] }) {
 
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-12">
 
-            <HotTrend />
+            <HotTrend hotTrend={hotTrend} />
 
             {/* --- Section 2: Recommended for You (Grid) --- */}
             <Recommendation />

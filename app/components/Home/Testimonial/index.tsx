@@ -53,7 +53,7 @@ const Testimonial = () => {
     ],
   }
   return (
-    <section id='testimonial-section' className='bg-cream'>
+    <section id='testimonial-section' className='bg-cream pb-10'>
       <div className='container'>
         <div className='flex flex-col sm:flex-row gap-5 justify-between sm:items-center mb-6'>
           <h2 className='font-bold tracking-tight'>

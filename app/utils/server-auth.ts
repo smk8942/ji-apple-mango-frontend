@@ -19,7 +19,6 @@ export async function getCurrentUser(): Promise<UserInfo | null> {
 
     if (res.ok) {
       const result = await res.json()
-      console.log("AAAA ", result)
       return result;
     }
   } catch (error) {
