@@ -19,7 +19,7 @@ const Mentor = () => {
     {
       imageSrc: '/images/team/fox.png',
       name: '변만수',
-      title: 'Project Reader',
+      title: 'Project Leader',
     },
     {
       imageSrc: '/images/team/dog.png',

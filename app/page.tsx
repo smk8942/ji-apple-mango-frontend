@@ -16,8 +16,6 @@ export default function Home() {
       <Testimonial />
       <ContactForm />
       <Mentor />
-      {/* <Newsletter /> */}
-      {/* <Companies /> */}
     </main>
   )
 }

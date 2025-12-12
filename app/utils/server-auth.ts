@@ -16,9 +16,11 @@ export async function getCurrentUser(): Promise<UserInfo | null> {
       },
       cache: 'no-store' // Ensure fresh data
     });
-    
+
     if (res.ok) {
-      return await res.json();
+      const result = await res.json()
+      console.log("AAAA ", result)
+      return result;
     }
   } catch (error) {
     console.error('Failed to fetch user:', error);

@@ -45,8 +45,7 @@ const variants = {
 };
 
 export const HotTrend = () => {
-    // Determine number of items to show based on screen width - simplified to fixed for now, 
-    // but in a real app potentially responsive. Using 4 as default.
+
     const [pages, setPages] = useState<Video[][]>([generateVideos(0, ITEMS_PER_PAGE)]);
     const [page, setPage] = useState(0);
     const [direction, setDirection] = useState(0);

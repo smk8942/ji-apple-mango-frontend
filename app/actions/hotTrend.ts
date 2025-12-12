@@ -1,0 +1,16 @@
+export const getHotTrend = async () => {
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trends/categories/hot?limit=10&platform=youtube`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            cache: 'no-store',
+            method: 'GET',
+        });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}

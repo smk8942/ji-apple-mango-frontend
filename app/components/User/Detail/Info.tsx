@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 const INITIAL_BASIC_INFO: UserBasicInfo = {
     name: '홍길동',
     email: 'hong@example.com',
-    avatarUrl: 'https://saveparts-dev2-bucket20250512.s3.amazonaws.com/20251012/stockParts/images/38e5a1c1-d073-4d5a-a240-6b777853a307_list.webp', // Placeholder
+    avatarUrl: 'https://1241saveparts-dev2-bucket20250512.s3.amazonaws.com/20251012/stockParts/images/38e5a1c1-d073-4d5a-a240-6b777853a307_list.webp', // Placeholder
     introduction: '안녕하세요! 콘텐츠 크리에이터를 꿈꾸는 홍길동입니다.',
 };
 
