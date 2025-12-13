@@ -2,9 +2,12 @@
 
 import React, { useState } from 'react';
 import Info from './Detail/Info';
-
-// --- Interfaces ---
-
+import { useInterestList } from '@/context/InterestContext';
+import { InterestType } from '@/types/interestType';
+import { useAuth } from '@/contexts/AuthContext';
+import { deleteInterest } from '@/app/actions/deleteInterest';
+import { insertInterest } from '@/app/actions/insertInterest';
+import { useRouter } from 'next/navigation';
 
 
 interface UserInterest {
@@ -19,16 +22,6 @@ interface UserChannel {
     handle?: string; // e.g., @username
 }
 
-// --- Mock Data ---
-
-
-
-const INITIAL_INTERESTS: UserInterest[] = [
-    { id: '1', name: '게임' },
-    { id: '2', name: '먹방' },
-    { id: '3', name: '브이로그' },
-];
-
 const INITIAL_CHANNELS: UserChannel[] = [
     { id: '1', platform: 'YouTube', isConnected: true, handle: 'hong_tv' },
     { id: '2', platform: 'Instagram', isConnected: false },
@@ -38,27 +31,74 @@ const INITIAL_CHANNELS: UserChannel[] = [
 
 export default function UserDetail() {
     // --- State ---
-    const [interests, setInterests] = useState<UserInterest[]>(INITIAL_INTERESTS);
+    const router = useRouter();
+    const { interestList } = useInterestList();
+    const { interests, userId } = useAuth();
+
     const [channels, setChannels] = useState<UserChannel[]>(INITIAL_CHANNELS);
+    const [selectedInterest, setSelectedInterest] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [newInterest, setNewInterest] = useState('');
-
+    // Filter interests based on search term
+    const filteredInterests = interestList
+        .filter(item => !interests?.some(userInterest => userInterest.interest === item.category))
+        .filter(item => item.category.toLowerCase().includes(searchTerm.toLowerCase()));
 
     // Interests
-    const handleAddInterest = (e: React.FormEvent) => {
+    const handleAddInterest = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newInterest.trim()) return;
-        const newItem: UserInterest = {
-            id: Date.now().toString(),
-            name: newInterest.trim(),
-        };
-        setInterests([...interests, newItem]);
-        setNewInterest('');
+        if (!selectedInterest || isSubmitting) return;
+
+        // Check if already exists
+        if (interests?.some(item => item.interest === selectedInterest)) {
+            setErrorMessage('이미 추가된 관심사입니다.');
+            setTimeout(() => setErrorMessage(''), 3000);
+            return;
+        }
+
+        setIsSubmitting(true);
+        await insertInterest(selectedInterest, userId);
+        setSelectedInterest('');
+        setSearchTerm('');
+        setIsDropdownOpen(false);
+        setErrorMessage('');
+        setIsSubmitting(false);
+        router.refresh(); // Refresh to get updated data from server
     };
 
-    const handleRemoveInterest = (id: string) => {
-        setInterests(interests.filter((item) => item.id !== id));
+    const handleSelectInterest = (category: string) => {
+        setSelectedInterest(category);
+        setSearchTerm(category);
+        setIsDropdownOpen(false);
     };
+
+    const handleRemoveInterest = async (id: string) => {
+        setIsSubmitting(true);
+        await deleteInterest(id, userId);
+        setIsSubmitting(false);
+        router.refresh(); // Refresh to get updated data from server
+    };
+
+    // Close dropdown when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (!target.closest('form')) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        if (isDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isDropdownOpen]);
 
     // Channels
     const toggleChannelConnection = (id: string) => {
@@ -81,12 +121,12 @@ export default function UserDetail() {
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">관심사</h2>
                 <div className="space-y-4">
                     <div className="flex flex-wrap gap-2">
-                        {interests.map((interest) => (
+                        {interests && interests.map((interest) => (
                             <div
                                 key={interest.id}
                                 className="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-medium border border-blue-100"
                             >
-                                <span>{interest.name}</span>
+                                <span>{interest.interest}</span>
                                 <button
                                     onClick={() => handleRemoveInterest(interest.id)}
                                     className="ml-2 p-0.5 hover:bg-blue-200 rounded-full transition-colors"
@@ -99,20 +139,54 @@ export default function UserDetail() {
                         ))}
                     </div>
 
+                    {errorMessage && (
+                        <div className="text-red-600 text-sm bg-red-50 px-3 py-2 rounded-lg border border-red-200">
+                            {errorMessage}
+                        </div>
+                    )}
+
                     <form onSubmit={handleAddInterest} className="flex gap-2 max-w-md">
-                        <input
-                            type="text"
-                            value={newInterest}
-                            onChange={(e) => setNewInterest(e.target.value)}
-                            placeholder="관심사를 입력하고 엔터를 누르세요 (예: 여행, 독서)"
-                            className="flex-1 px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                        />
+                        <div className="flex-1 relative">
+                            <input
+                                type="text"
+                                value={searchTerm}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                    setIsDropdownOpen(true);
+                                    setSelectedInterest('');
+                                }}
+                                onFocus={() => setIsDropdownOpen(true)}
+                                placeholder="관심사를 검색하세요..."
+                                className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            />
+
+                            {isDropdownOpen && filteredInterests.length > 0 && (
+                                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                                    {filteredInterests.map((interest) => (
+                                        <button
+                                            key={interest.category}
+                                            type="button"
+                                            onClick={() => handleSelectInterest(interest.category)}
+                                            className="w-full text-left px-4 py-2 hover:bg-blue-50 text-sm transition-colors"
+                                        >
+                                            {interest.category}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
+                            {isDropdownOpen && searchTerm && filteredInterests.length === 0 && (
+                                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-3 text-sm text-gray-500">
+                                    검색 결과가 없습니다.
+                                </div>
+                            )}
+                        </div>
                         <button
                             type="submit"
-                            disabled={!newInterest.trim()}
+                            disabled={!selectedInterest || isSubmitting}
                             className="px-4 py-2 rounded-xl bg-gray-900 text-white text-sm font-medium hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            추가
+                            {isSubmitting ? '추가 중...' : '추가'}
                         </button>
                     </form>
                 </div>

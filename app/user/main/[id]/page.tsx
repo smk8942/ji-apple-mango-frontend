@@ -121,7 +121,7 @@ export default function MainDetailPage() {
                         </div>
                     </div>
                     <div className="text-sm text-gray-400 text-right mt-4">
-                        분석일: {new Date(video.crawled_at).toLocaleDateString()}
+                        분석일: {video.crawled_at ? new Date(video.crawled_at).toLocaleDateString() : new Date().toLocaleDateString()}
                     </div>
                 </div>
             </div>

@@ -132,12 +132,8 @@ const NamesList = () => {
     <section id='courses-section'>
       <div className='container mx-auto max-w-7xl px-4'>
         <div className='flex flex-col sm:flex-row justify-between sm:items-center gap-5 mb-4'>
-          <h2 className='font-bold tracking-tight'>Popular Courses</h2>
-          <div>
-            <button className='bg-transparent cursor-pointer hover:bg-primary text-primary font-medium hover:text-white py-3 px-4 border border-primary hover:border-transparent rounded-sm duration-300'>
-              Explore Classes
-            </button>
-          </div>
+          <h2 className='font-bold tracking-tight'>지원 목록</h2>
+
         </div>
         <div className='flex nowhitespace space-x-5 rounded-xl bg-white p-1 overflow-x-auto mb-4'>
           {/* FOR DESKTOP VIEW */}
@@ -150,7 +146,7 @@ const NamesList = () => {
                 : 'text-black/40') +
               ' pb-2 text-lg hidden sm:block hover:cursor-pointer'
             }>
-            Web Development
+            YouTube
           </button>
           <button
             onClick={() => setSelectedButton('mobiledevelopment')}
@@ -161,7 +157,7 @@ const NamesList = () => {
                 : 'text-black/40') +
               ' pb-2 text-lg hidden sm:block hover:cursor-pointer'
             }>
-            Mobile Development
+            Instagram
           </button>
           <button
             onClick={() => setSelectedButton('datascience')}
@@ -172,7 +168,7 @@ const NamesList = () => {
                 : 'text-black/40') +
               ' pb-2 text-lg hidden sm:block hover:cursor-pointer'
             }>
-            Data Science
+            TikTok
           </button>
           <button
             onClick={() => setSelectedButton('cloudcomputing')}
@@ -183,7 +179,7 @@ const NamesList = () => {
                 : 'text-black/40') +
               ' pb-2 text-lg hidden sm:block hover:cursor-pointer'
             }>
-            Cloud Computing
+            Twitter
           </button>
 
           {/* FOR MOBILE VIEW */}

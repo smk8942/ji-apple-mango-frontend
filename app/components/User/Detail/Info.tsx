@@ -3,18 +3,16 @@
 import { useEffect, useState } from "react";
 import UserAvatar from "../../Common/UserAvatar";
 import { Icon } from "@iconify/react/dist/iconify.js";
-
-const INITIAL_BASIC_INFO: UserBasicInfo = {
-    name: '홍길동',
-    email: 'hong@example.com',
-    avatarUrl: 'https://1241saveparts-dev2-bucket20250512.s3.amazonaws.com/20251012/stockParts/images/38e5a1c1-d073-4d5a-a240-6b777853a307_list.webp', // Placeholder
-    introduction: '안녕하세요! 콘텐츠 크리에이터를 꿈꾸는 홍길동입니다.',
-};
+import { useAuth } from "@/contexts/AuthContext";
+import { updateUserInfo } from "@/app/actions/updateUserInfo";
 
 export default function Info() {
-    const [basicInfo, setBasicInfo] = useState<UserBasicInfo>(INITIAL_BASIC_INFO);
 
-    const [editForm, setEditForm] = useState<UserBasicInfo>(INITIAL_BASIC_INFO);
+    const { userId, name, email, avatarUrl, bio, setAvatarUrl } = useAuth();
+
+    const [basicInfo, setBasicInfo] = useState<UserBasicInfo>({ name, email, avatarUrl, bio });
+
+    const [editForm, setEditForm] = useState<UserBasicInfo>(basicInfo);
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const [isEditingInfo, setIsEditingInfo] = useState(false);
 
@@ -30,11 +28,13 @@ export default function Info() {
         setEditForm({ ...basicInfo });
     };
 
-    const saveEditing = () => {
-
-
+    const saveEditing = async () => {
         setBasicInfo(editForm);
         setIsEditingInfo(false);
+        const updateData: any = await updateUserInfo(avatarFile, editForm.bio, userId);
+
+        setAvatarUrl?.(updateData.profile_image_url);
+
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -47,8 +47,6 @@ export default function Info() {
             setAvatarFile(e.target.files[0]);
         }
     };
-
-
 
     useEffect(() => {
         if (avatarFile) {
@@ -148,15 +146,15 @@ export default function Info() {
                         <label className="block text-sm font-medium text-gray-500 mb-1">소개</label>
                         {isEditingInfo ? (
                             <textarea
-                                name="introduction"
-                                value={editForm.introduction}
+                                name="bio"
+                                value={editForm.bio}
                                 onChange={handleInputChange}
                                 rows={4}
                                 className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                             />
                         ) : (
                             <p className="w-full px-4 py-2 rounded-xl border border-transparent text-gray-700 whitespace-pre-wrap">
-                                {editForm.introduction}
+                                {editForm.bio ? editForm.bio : '소개를 입력해주세요.'}
                             </p>
                         )}
                     </div>

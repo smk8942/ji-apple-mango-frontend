@@ -1,11 +1,6 @@
+import { UserInfo } from '@/types/userInfo';
 import { cookies } from 'next/headers'
 
-export interface UserInfo {
-  logged_in: boolean;
-  email: string;
-  name?: string;
-  avatarUrl?: string;
-}
 
 export async function getCurrentUser(): Promise<UserInfo | null> {
   const cookieStore = await cookies()
@@ -19,7 +14,24 @@ export async function getCurrentUser(): Promise<UserInfo | null> {
 
     if (res.ok) {
       const result = await res.json()
-      return result;
+
+
+      if (result.logged_in === false) {
+        return null;
+      }
+
+      const userInfo = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/accounts/${result.user_id}`, {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        cache: 'no-store' // Ensure fresh data
+      });
+
+
+      const userInfoJson: UserInfo = await userInfo.json()
+      userInfoJson.logged_in = true;
+
+      return userInfoJson;
     }
   } catch (error) {
     console.error('Failed to fetch user:', error);

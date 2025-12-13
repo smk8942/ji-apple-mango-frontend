@@ -9,10 +9,6 @@ export const DocNavigation = () => {
     setNavItem(item);
   }
 
-  useEffect(() => {
-    console.log(navItem);
-  }, [navItem]);
-
   const DocsNav = [
     {
       id: 1,

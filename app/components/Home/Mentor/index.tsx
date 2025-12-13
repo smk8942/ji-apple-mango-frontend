@@ -19,11 +19,11 @@ const Mentor = () => {
     {
       imageSrc: '/images/team/fox.png',
       name: '변만수',
-      title: 'Project Leader',
+      title: '⭐겁나 잘생긴 남자⭐',
     },
     {
       imageSrc: '/images/team/dog.png',
-      name: '김중은',
+      name: '박중은',
       title: 'Fullstack Developer',
     },
     {
@@ -47,7 +47,7 @@ const Mentor = () => {
 
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6  xl:gap-8'>
           {members.map((item, index) => (
-            <div key={index} className='group relative shadow-lg'>
+            <div key={index} className={`${item.name === '변만수' ? 'border-5 border-red-500' : ''} group relative shadow-lg `}>
               <div className='min-h-80 w-full overflow-hidden rounded-lg bg-gray-100 lg:h-80'>
                 <Image
                   src={item.imageSrc}
@@ -61,7 +61,7 @@ const Mentor = () => {
                 <div>
                   <div className='border border-white rounded-lg -mt-8 bg-white p-2 shadow-mentorShadow flex items-center justify-center'>
                     <p
-                      className='text-sm text-gray-700 text-center'>
+                      className={`text-sm text-gray-700 text-center ${item.name === '변만수' ? 'font-black !text-2xl !bg-blue-500 !text-white' : ''}`}>
                       {item.title}
                     </p>
                   </div>

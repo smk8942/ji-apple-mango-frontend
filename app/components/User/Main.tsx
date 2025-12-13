@@ -1,12 +1,23 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { HotTrend } from '../Common/HotTrend';
 import { Recommendation } from '../Common/Recommendation';
-import { Category } from '@/types/category';
+import { useAuth } from '@/contexts/AuthContext';
+import { Interest } from '@/types/userInfo';
 
 
-export default function UserMain({ userCategory, hotTrend }: { userCategory: Category[], hotTrend: Video[] }) {
+export default function UserMain({ hotTrend }: { hotTrend: Video[] }) {
+
+    const { interests } = useAuth();
+
+    const [categoryList, setCategoryList] = useState<Interest[]>([]);
+
+    useEffect(() => {
+        if (interests) {
+            setCategoryList(interests);
+        }
+    }, [interests]);
 
 
     return (
@@ -14,10 +25,9 @@ export default function UserMain({ userCategory, hotTrend }: { userCategory: Cat
 
             <HotTrend hotTrend={hotTrend} />
 
-            {/* --- Section 2: Recommended for You (Grid) --- */}
-            <Recommendation />
+            <Recommendation userInterests={categoryList} />
 
-            {userCategory && userCategory.map((category) => (
+            {categoryList && categoryList.map((category) => (
                 <Recommendation key={category.id} userCategory={category} />
             ))}
 

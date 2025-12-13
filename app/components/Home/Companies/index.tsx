@@ -67,7 +67,7 @@ const Companies = () => {
     },
     {
       imgSrc: '/images/team/dog.png',
-      name: '김중은',
+      name: '박중은',
     },
     {
       imgSrc: '/images/team/rabbit.png',

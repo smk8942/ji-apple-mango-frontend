@@ -1,4 +1,4 @@
-
+'use server'
 export const categoryList = async (category: string, count: number) => {
 
     try {

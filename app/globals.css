@@ -56,3 +56,9 @@
 html {
   scroll-behavior: smooth;
 }
+
+#Home {
+  background-image: url('/images/banner/hero_bg_social.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}

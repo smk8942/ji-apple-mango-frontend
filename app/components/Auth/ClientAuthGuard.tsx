@@ -11,27 +11,27 @@ import Loader from '@/app/components/Common/Loader';
  * Relies on AuthContext to check session status.
  */
 export default function ClientAuthGuard({ children }: { children: React.ReactNode }) {
-    // const { isLoggedIn, isLoading } = useAuth();
-    // const router = useRouter();
+    const { isLoggedIn, isLoading } = useAuth();
+    const router = useRouter();
 
-    // useEffect(() => {
-    //     if (!isLoading && !isLoggedIn) {
-    //         router.replace('/');
-    //     }
-    // }, [isLoading, isLoggedIn, router]);
+    useEffect(() => {
+        if (!isLoggedIn) {
+            router.replace('/');
+        }
+    }, [isLoggedIn, router]);
 
-    // if (isLoading) {
-    //     return (
-    //         <div className="flex h-screen w-full items-center justify-center">
-    //             <Loader />
-    //         </div>
-    //     );
-    // }
+    if (isLoading) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center">
+                <Loader />
+            </div>
+        );
+    }
 
-    // // Prevent flash of content if redirected
-    // if (!isLoggedIn) {
-    //     return null;
-    // }
+    // Prevent flash of content if redirected
+    if (!isLoggedIn) {
+        return null;
+    }
 
     return <>{children}</>;
 }

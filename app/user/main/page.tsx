@@ -1,5 +1,6 @@
 import { categoryList } from "@/app/actions/categoryList";
 import UserMain from "@/app/components/User/Main";
+import { useAuth } from "@/contexts/AuthContext";
 import { Category } from "@/types/category";
 import { HotTrendType } from "@/types/hotTrend";
 
@@ -29,16 +30,8 @@ export default async function UserMainPage() {
                 }
             }
         }
-        const userCategory: Category[] = [{
-            id: "car",
-            name: "자동차"
-        }, {
-            id: "movie",
-            name: "영화"
-        }];
 
-
-        return <UserMain userCategory={userCategory} hotTrend={flattenedList} />
+        return <UserMain hotTrend={flattenedList} />
     } catch (error) {
         console.log(error);
         return <div>
